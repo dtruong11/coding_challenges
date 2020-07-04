@@ -1,6 +1,5 @@
 ### Practice JavaSript Alogirthms
 
-1. Problems on Project Euler and LeetCode
-2. Basic JavaScript Algorithms
+This project helps me review algorithms and Leetcode challenges
 
 Author: Diep Truong
