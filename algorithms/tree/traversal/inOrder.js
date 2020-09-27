@@ -1,4 +1,10 @@
-// ITERATION LEFT => NODE => RIGHT
+/*
+LEFT => ROOT => RIGHT
+*/
+
+const { TreeNode } = require('../util')
+
+// ITERATION
 function inOrderIterative(root) {
   if (!root) return
   let stack = []
@@ -22,14 +28,6 @@ function inOrderRecursive(root) {
   inOrderRecursive(root.right)
 }
 
-class TreeNode {
-  constructor(val) {
-    this.val = val
-    this.left = null
-    this.right = null
-  }
-}
-
 let a = new TreeNode(3)
 let b = new TreeNode(4)
 let c = new TreeNode(5)
@@ -43,6 +41,12 @@ a.right = c
 b.left = d
 b.right = f
 f.left = g
+
+
+// TEST
+console.log(inOrderIterative(a))
+console.log(inOrderRecursive(a))
+
 /*
    		3
      / \
