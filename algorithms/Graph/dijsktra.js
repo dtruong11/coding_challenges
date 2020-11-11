@@ -29,11 +29,11 @@ class WeightedGraph {
       const node = pq.dequeue()
 
       const neighbors = this.adjList[node]
-      for (let element of neighbors) {
-        if (!visited[element]) {
-          distances[element] = distances[node] + 
-        }
-      }
+      // for (let element of neighbors) {
+      //   if (!visited[element]) {
+      //     distances[element] = distances[node] + 
+      //   }
+      // }
 
     }
 
