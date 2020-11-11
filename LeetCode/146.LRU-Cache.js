@@ -1,135 +1,126 @@
-/**
- * @param {number} capacity
+/*
+ start: 7:30AM
+ end: 8:19AM
  */
 
-class LRUCache {
-  constructor(capacity) {
-    this.capacity = capacity
-    this.keys = {}
-    this.list = new DoubleLinkedList() // queue
-  }
-
-  // get 1 => disconnect 1 => add to head
-  get (key) {
-    const existingNode = this.keys[key]
-    if (!existingNode) return -1
-      const removed = this.list.removeNode(existingNode)
-      this.list.addToTail(removed.val)
-      return existingNode.val
-  }
-
-  put (key, value) {
-    const existingNode = this.keys[key]
-    if (existingNode) {
-      if (existingNode.val !== value) existingNode.val = value
-      const removed = this.list.removeNode(existingNode)
-      this.list.addToTail(value)
-    } else {
-      const newNode = new ListNode(value)
-      this.list.addToTail(value)
-      this.keys[key] = newNode
-    }
-    if (this.capacity < this.list.length) {
-      this.list.removeFromHead()
-        delete this.keys[key]
-    }
-  }
-
-  print () {
-    const result = []
-    let root = this.list.head
-    while (root) {
-      result.push(root.val)
-      root = root.next
-    }
-    return result 
-  }
-};
-
-
-// Double Linked List
 class ListNode {
-  constructor(val, next = null, prev = null) {
-    this.val = val
-    this.next = next
-    this.prev = prev
-  }
+    constructor(key = 0, val = 0, prev = null, next = null) {
+        this.key = key
+        this.val = val
+        this.prev = null
+        this.next = null
+    }
 }
 
 class DoubleLinkedList {
-  constructor() {
-    this.head = null
-    this.tail = null
-    this.length = 0
-  }
-
-  addToHead (val) {
-    const node = new ListNode(val)
-    if (!this.head) {
-      this.head = node
-      this.tail = node
-    } else {
-      this.head.prev = node
-      node.next = this.head
-      this.head = node
+    constructor(){
+        this.head = new ListNode()
+        this.tail = new ListNode()
+        this.head.next = this.tail
+        this.tail.prev = this.head
     }
-    this.length++
-    return this
-  }
-
-  addToTail (val) {
-    const node = new ListNode(val)
-    if (!this.head) {
-      this.head = node
-      this.tail = node
-    } else {
-      this.tail.next = node
-      node.prev = this.tail
-      this.tail = node
+    addToHead (node) {
+        const headCurNext = this.head.next
+        this.head.next = node
+        node.prev = this.head
+        node.next = headCurNext
+        headCurNext.prev = node
     }
-    this.length++
-    return this
-  }
-
-  removeFromHead () {
-    if (!this.head) return
-    const next = this.head.next
-    if (!next) {
-      this.head = null
-      this.tail = null
-    } else {
-      next.prev = null
-      this.head = next
+    
+    // remove node from anywhere. remove 2 from h -> 1 -> 2 -> t
+    remove (node) {
+        const next = node.next 
+        const prev = node.prev
+        prev.next = next
+        next.prev = prev
+        return node
     }
-    this.length--
-    return this
-  }
-
-  removeFromTail () {
-    if (!this.tail) return null
-    const prev = this.tail.prev
-    if (!prev) {
-      this.tail = null
-      this.head = null
-    } else {
-      prev.next = null
-      this.tail = prev
-    }
-    this.length--
-    return this
-  }
-
-  removeNode (node) {
-    const prev = node.prev
-    const next = node.next
-    if (node === this.head) return this.removeFromHead()
-    else if (node === this.tail) return this.removeFromTail()
-    else {
-      const prev = node.prev
-      const next = node.next
-      prev.next = next
-    }
-    this.length--
-    return node
-  }
 }
+
+/** 
+ head most recent
+ remove from tail -> least used
+ */
+class LRUCache {
+    constructor (capacity) {
+        this.capacity = capacity
+        this.cache = {}
+        this.size = 0
+        this.list = new DoubleLinkedList()
+    }
+    
+    removeNode (node) {
+        this.list.remove(node)
+        this.size--
+        delete this.cache[node.key]
+    }
+    
+    addNode (node) {
+        this.list.addToHead(node)
+        this.size++
+        this.cache[node.key] = node
+    }
+    
+    moveToHead (node) {
+        this.removeNode(node)
+        this.addNode(node)
+    }
+    
+    removeFromTail () {
+        const prevTail = this.list.tail.prev
+        this.removeNode(prevTail)
+    }
+    
+  /*
+  get
+  - check if exists in hashmap
+   - if exist
+     - removeNode
+     - addToHead
+     - return its value
+   - non exist -> -1
+  */
+    get(key) {
+        let node = this.cache[key]
+        if (!node) return -1
+        this.moveToHead(node)
+        return node.val
+    }
+    
+  /*
+  put
+  1. check if exist in map
+  2. if exist
+      - update value
+      - removeNode
+      - addToHead
+  3. if not
+      create node
+      addTo Map
+      addToHead
+      increase size
+      size > capacity
+        removeFromTail
+  */
+    put (key, value) {
+        let node = this.cache[key]
+        if (node) {
+            node.val = value
+            this.moveToHead(node)
+        } else {
+            const newNode = new ListNode(key, value)
+            this.cache[key] = newNode
+            this.addNode(newNode)
+            // evict
+            if (this.size > this.capacity) {
+                this.removeFromTail()
+            }
+        }
+    }
+}
+
+/*
+STRUGGLE
+- forget to delete from cache after evict
+=> add delete key from cache in removeNode()
+*/
