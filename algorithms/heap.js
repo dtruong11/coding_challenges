@@ -181,6 +181,74 @@ class MaxHeap {
 		}
 }
 
+// Class MaxHeap - correct implementation
+class MaxHeap {
+
+    constructor() {
+        this.heap = [];
+    }
+  
+    getMax() {
+      return this.heap[1]
+    }
+  
+
+    // define add function
+    add(element) {
+        this.heap.push(element);
+        //Sort uusing O(N)
+        
+        let i = this.heap.length - 1;
+        while (i > 0) {
+            let parent = Math.floor((i - 1) / 2);
+            if (this.heap[i] > this.heap[parent]) {
+                let temp = this.heap[i];
+                this.heap[i] = this.heap[parent];
+                this.heap[parent] = temp;
+            }
+            i = parent;
+        }
+
+    }
+
+    // define pop
+    pop() {
+        let last = this.heap.pop();
+        if (this.heap.length === 0) {
+            return last;
+        }
+        let first = this.heap[0];
+        this.heap[0] = last;
+        let i = 0;
+        while (i < this.heap.length) {
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+            let max = i;
+            if (left < this.heap.length && this.heap[left] > this.heap[max]) {
+                max = left;
+            }
+            if (right < this.heap.length && this.heap[right] > this.heap[max]) {
+                max = right;
+            }
+            if (max !== i) {
+                let temp = this.heap[i];
+                this.heap[i] = this.heap[max];
+                this.heap[max] = temp;
+                i = max;
+            } else {
+                break;
+            }
+        }
+        return first;
+    }
+
+    // define size function
+    size() {
+        return this.heap.length;
+    }
+}
+
+
 /** TEST HEAP **/
 const minHeap = new MinHeap()
 minHeap.add(5).add(4).add(3).add(6).add(2).add(1)
