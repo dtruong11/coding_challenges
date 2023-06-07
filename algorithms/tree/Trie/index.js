@@ -3,14 +3,15 @@ https://leetcode.com/problems/implement-trie-prefix-tree/discuss/613676/JavaScri
 https://leetcode.com/problems/implement-trie-prefix-tree/discuss/422168/JavaScript-Solution
 https://github.com/mission-peace/interview/blob/master/src/com/interview/suffixprefix/Trie.java
 */
+
 /*
-WHAT I STRUGGLE WITH
-- how to handle multiple children. 
+* WHAT I STRUGGLE WITH
+* - how to handle multiple children. 
 */
 
 /** 
- * Your Trie object will be instantiated and called as such:
- * var obj = new Trie()
+ * The Trie object will be instantiated and called as such:
+ * const obj = new Trie()
  * obj.insert(word)
  * var param_2 = obj.search(word)
  * var param_3 = obj.startsWith(prefix)
@@ -142,4 +143,4 @@ class Trie {
     delete(word) {
         return this._shouldDeleteChar(this.root, 0, word)
     }
-}dict.insert('hello')
+}
