@@ -2,21 +2,28 @@ class Graph{
     constructor(){
         this.adjacencyList = {};
     }
+
     addVertex(vertex){
-        if(!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+        if(this.adjacencyList[vertex] === undefined) this.adjacencyList[vertex] = [];
     }
+
     addEdge(v1,v2){
         this.adjacencyList[v1].push(v2);
         this.adjacencyList[v2].push(v1);
     }
+
     removeEdge(vertex1,vertex2){
-        this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(
-            v => v !== vertex2
-        );
-        this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(
-            v => v !== vertex1
-        );
+        const index_v2 = this.adjacencyList[vertex1].indexOf(vertex2);
+        if (index_v2 !== -1) {
+            this.adjacencyList[vertex1].splice(index_v2, 1);
+        }
+
+        const index_v1 = this.adjacencyList[vertex2].indexOf(vertex1);
+        if (index_v1 !== -1) {
+            this.adjacencyList[vertex2].splice(index_v1, 1);
+        }
     }
+
     removeVertex(vertex){
         while(this.adjacencyList[vertex].length){
             const adjacentVertex = this.adjacencyList[vertex].pop();
@@ -24,6 +31,7 @@ class Graph{
         }
         delete this.adjacencyList[vertex]
     }
+
     depthFirstRecursive(start){
         const result = [];
         const visited = {};
@@ -42,6 +50,7 @@ class Graph{
 
         return result;
     }
+
     depthFirstIterative(start){
         const stack = [start];
         const result = [];
@@ -62,6 +71,7 @@ class Graph{
         }
         return result;
     }
+
     breadthFirst(start){
         const queue = [start];
         const result = [];
@@ -72,8 +82,6 @@ class Graph{
         while(queue.length){
             currentVertex = queue.shift();
             result.push(currentVertex);
-           
-
             this.adjacencyList[currentVertex].forEach(neighbor => {
                 if(!visited[neighbor]){
                     visited[neighbor] = true;
@@ -84,8 +92,6 @@ class Graph{
         return result;
     }
 }
-
-
 
 let g = new Graph();
 
