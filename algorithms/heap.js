@@ -5,19 +5,27 @@ class MinHeap {
 
   enqueue(value) {
     this.heap.push(value);
-    let curIdx = this.heap.length - 1;
-    let parentIdx = this._getParentIndex(curIdx);
+    if (this.heap.length > 1) { 
+      let curIdx = this.heap.length - 1;
+      let parentIdx = this._getParentIndex(curIdx);
 
-    // bubble up
-    while (this.heap[curIdx] < this.heap[parentIdx]) {
-      this._swapNodes(curIdx, parentIdx);
-      curIdx = parentIdx;
-      parentIdx = this._getParentIndex(curIdx);
+      // bubble up
+      while (this.heap[curIdx] < this.heap[parentIdx]) {
+        this._swapNodes(curIdx, parentIdx);
+        curIdx = parentIdx;
+        parentIdx = this._getParentIndex(curIdx);
+      }
     }
+    return this
   }
 
   dequeue() {
+    if (this.heap.length === 0) return undefined
+    if (this.heap.length === 1) return this.heap.pop()
+
+    // get the min node
     const topNode = this.heap[0];
+    
     // swap first and last node
     this._swapNodes(0, this.heap.length - 1);
 
@@ -52,10 +60,12 @@ class MinHeap {
   }
 
   _getParentIndex(index) {
+    if (index === 0) return 0
     return Math.floor((index - 1) / 2);
   }
 
   _getSmallerValIdx(leftIdx, rightIdx) {
+    if (!this._isValidIdx(rightIdx)) return leftIdx
     if (this.heap[leftIdx] < this.heap[rightIdx]) return leftIdx;
     return rightIdx;
   }
