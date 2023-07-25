@@ -1,9 +1,13 @@
-/* 
-Make a 2D matrix filled with 0, 1 randomly
-*/
-// Fisher Yate Shuffle Sort 
-function createMatrix(rows, cols) {
+function createMatrix(row_len, col_len) {
+  // Create an empty 2D matrix
+  const matrix = new Array(row_len);
 
+  // Initialize each row with an array of zeroes
+  for (let i = 0; i < row_len; i++) {
+    matrix[i] = new Array(col_len).fill(0);
+  }
+
+  return matrix;
 }
 
 // 3 is a starting point. 4 is the end point. 1 is an obstacle. 0 are free. 
