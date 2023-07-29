@@ -24,7 +24,7 @@ class MaxHeap {
     if (this.heap.length === 0) return undefined;
     if (this.heap.length === 1) return this.heap.pop();
 
-    // get the min node
+    // get the max node
     const topNode = this.heap[0];
 
     // swap first and last node
