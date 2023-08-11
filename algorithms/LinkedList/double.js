@@ -86,17 +86,35 @@ class DoubleLinkedList {
     return node
   }
 
-  // addAfter (prevNode, val) {
-  //   const node = new ListNode(val)
-  //   if (!prevNode) {
-  //     return
-  //   }
-  //   const prevNext = prevNode.next
-  //   prevNode.next = node
-  //   node.prev = prevNode
-  //   node.next = prevNext
-  //   if (prevNext) prevNext.prev = node
-  // }
+  insertAfterIndex (val, idx) {
+    if (idx < 0 || idx >= this.size) return this
+
+    if (!this.head) {
+      this.addToHead(val)
+      return this
+    }
+    if (idx === this.size - 1) {
+      this.addToTail(val)
+      return this
+    }
+    const node = new Node(val)
+    let cur = this.head
+
+    for (let i = 0; i < idx; i++) {
+      if (!cur) return this
+      cur = cur.next
+    }
+
+    let curNext = cur.next
+    cur.next = node
+    node.prev = cur
+    node.next = curNext
+
+    this.length += 1
+
+    return this
+  }
+
   print () {
     if (this.head) {
       let cur = this.head
