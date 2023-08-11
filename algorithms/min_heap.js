@@ -3,6 +3,10 @@ class MinHeap {
     this.heap = [];
   }
 
+  size() {
+    return this.heap.length
+  }
+
   enqueue(value) {
     this.heap.push(value);
     if (this.heap.length > 1) { 

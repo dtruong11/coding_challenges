@@ -1,37 +1,95 @@
 /** MAX HEAP **/
 class MaxHeap {
-    constructor() {
-        this.heap = []
-    }
+  constructor() {
+    this.heap = [];
+  }
 
-    peek() {
-        return this.heap[0]
-    }
+  enqueue(value) {
+    this.heap.push(value);
+    if (this.heap.length > 1) {
+      let curIdx = this.heap.length - 1;
+      let parentIdx = this._getParentIndex(curIdx);
 
-    _isValidIdx(idx) {
-        return idx >= 0 && idx < this.heap.length;
+      // bubble up
+      while (this.heap[curIdx] > this.heap[parentIdx]) {
+        this._swapNodes(curIdx, parentIdx);
+        curIdx = parentIdx;
+        parentIdx = this._getParentIndex(curIdx);
+      }
     }
+    return this;
+  }
 
-    _getLeftChildIdx(index) {
-        return index * 2 + 1;
-    }
+  dequeue() {
+    if (this.heap.length === 0) return undefined;
+    if (this.heap.length === 1) return this.heap.pop();
 
-    _getRightChildIdx(index) {
-        return index * 2 + 2;
-    }
+    // get the max node
+    const topNode = this.heap[0];
 
-    _getParentIndex(index) {
-        if (index === 0) return 0
-        return Math.floor((index - 1) / 2);
-    }
+    // swap first and last node
+    this._swapNodes(0, this.heap.length - 1);
 
-    _getBiggerValIdx(leftIdx, rightIdx) {
-        if (!this._isValidIdx(rightIdx)) return leftIdx
-        if (this._isValidIdx(rightIdx) && this._isValidIdx(leftIdx)) {
-            if (this.heap[leftIdx][1] > this.heap[rightIdx][1]) return leftIdx;
-            return rightIdx;
-        }
+    // remove the last node
+    this.heap.pop();
+
+    // bubble down
+    let curIdx = 0;
+    let leftChildIdx = this._getLeftChildIdx(curIdx);
+    let rightChildIdx = this._getRightChildIdx(curIdx);
+
+    while (
+      (this._isValidIdx(leftChildIdx) &&
+        this.heap[curIdx] < this.heap[leftChildIdx]) ||
+      (this._isValidIdx(rightChildIdx) &&
+        this.heap[curIdx] < this.heap[rightChildIdx])
+    ) {
+      const biggerChildIdx = this._getBiggerValIdx(leftChildIdx, rightChildIdx);
+      this._swapNodes(curIdx, biggerChildIdx);
+      curIdx = biggerChildIdx;
+      leftChildIdx = this._getLeftChildIdx(curIdx);
+      rightChildIdx = this._getRightChildIdx(curIdx);
     }
+    return topNode;
+  }
+
+  peek() {
+    return this.heap[0];
+  }
+
+  _getParentIndex(index) {
+    if (index === 0) return 0;
+    return Math.floor((index - 1) / 2);
+  }
+
+  _getBiggerValIdx(leftIdx, rightIdx) {
+    if (!this._isValidIdx(rightIdx)) return leftIdx;
+    if (this.heap[leftIdx] > this.heap[rightIdx]) return leftIdx;
+    return rightIdx;
+  }
+
+  _getLeftChildIdx(index) {
+    return index * 2 + 1;
+  }
+
+  _getRightChildIdx(index) {
+    return index * 2 + 2;
+  }
+
+  _swapNodes(node1Idx, node2Idx) {
+    let temp = this.heap[node1Idx];
+    this.heap[node1Idx] = this.heap[node2Idx];
+    this.heap[node2Idx] = temp;
+  }
+
+  _isValidIdx(idx) {
+    return idx >= 0 && idx < this.heap.length;
+  }
+
+  isEmpty() {
+    return this.heap.length === 0;
+  }
+}
 
     _swapNodes(idx1, idx2) {
         const temp = this.heap[idx1]
