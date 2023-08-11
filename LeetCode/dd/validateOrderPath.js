@@ -17,7 +17,7 @@
  */
 
 // Improved version
-function validateOrderPath(pickupDropoffs) {
+function validateOrderPath (pickupDropoffs) {
   if (pickupDropoffs.length === 0) return true;
   if (pickupDropoffs.length % 2 === 1) return false;
 
@@ -73,7 +73,7 @@ const arr11 = ["P1", "D1", "P1", "D1"];
  * Ex 1: orders = ['P1', 'P1', 'D1'], return ['P1', 'D1']
  * Ex 2: orders = ['P1', 'P1', 'D1', 'D1'], return ['P1', 'D1']
  */
-function findLongestValidSubarray(pickupDropoffs) {
+function findLongestValidSubarray (pickupDropoffs) {
   let result = [];
 
   for (let i = 0; i < pickupDropoffs.length; i++) {
@@ -95,11 +95,13 @@ console.log(findLongestValidSubarray(["P1", "P2", "D2", "D3"]));
 
 /**
  * FOLLOW UP QUESTION
+ * Pick & Delivery Permutations
+ * 
  * Given number of order return all teh possible valid orders
  * n = 2 orders = [P1, P2, D1, D2] , [P1, P2, D2, D1] , [P1, D1, P2, D2]
  */
 
-function generateValidOrders(nums) {
+function generateValidOrders (nums) {
   const result = [];
   const pickupSet = new Set();
   const dropoffSet = new Set();
@@ -107,7 +109,7 @@ function generateValidOrders(nums) {
   return result;
 }
 
-function dfsGenerate(nums, result, curPath, pickupSet, dropoffSet) {
+function dfsGenerate (nums, result, curPath, pickupSet, dropoffSet) {
   if (curPath.length === nums * 2) {
     result.push([...curPath]);
     return;
