@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/dtruong11/coding_challenges/issues"
   },
-  "homepage": "https://github.com/dtruong11/coding_challenges#readme"
+  "homepage": "https://github.com/dtruong11/coding_challenges#readme",
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
 }

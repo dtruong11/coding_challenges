@@ -1,3 +1,5 @@
+import { Queue } from '../../../data_structures/queue.js'
+
 function createMatrix(row_len, col_len) {
   // Create an empty 2D matrix
   const matrix = new Array(row_len);
@@ -17,6 +19,14 @@ const matrix = [
   [0, 0, 3, 0],
   [1, 0, 0, 0]
 ]
+
+function bfsShortestDistance(matrix, start, end) {
+  const row_len = matrix.length
+  const col_len = matrix[0].length
+
+  const queue = new Queue()
+
+}
 
 // BFS - first time finding the path => also find the shortest path. 
 function shortestDist(startX, startY) {
