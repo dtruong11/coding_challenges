@@ -91,6 +91,36 @@ class Graph{
         }
         return result;
     }
+
+  /**
+   * Return true if the (undirected) graph contains at least one cycle,
+   * otherwise false.
+   */
+  hasCycle() {
+    const visited = new Set();
+
+    // depth-first search that tracks the vertex we arrived from
+    const dfs = (vertex, parent) => {
+      visited.add(vertex);
+
+      for (const neighbor of this.adjacencyList[vertex]) {
+        if (!visited.has(neighbor)) {
+          if (dfs(neighbor, vertex)) return true;          // found a cycle below
+        } else if (neighbor !== parent) {
+          return true;                                     // visited & not parent → back-edge
+        }
+      }
+      return false;
+    };
+
+    // the graph might not be connected
+    for (const vertex of Object.keys(this.adjacencyList)) {
+      if (!visited.has(vertex) && dfs(vertex, null)) {
+        return true;
+      }
+    }
+    return false;
+  }  
 }
 
 let g = new Graph();
