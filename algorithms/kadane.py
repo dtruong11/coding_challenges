@@ -1,3 +1,4 @@
+# March 30, 2026
 from typing import List, Tuple;
 
 # Max
@@ -16,7 +17,7 @@ class Solution:
 
 # Sliding Window returns the indicies of the sub array that has the largest sum
   def max_sub_array_indices(nums: List[int]) -> int, Tuple(int, int):
-    max_sum = float(-inf)
+    max_sum = nums[0]
     cur_sum = 0
     max_left, max_right = 0, 0
     left = 0
